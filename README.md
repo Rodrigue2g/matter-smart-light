@@ -1,28 +1,46 @@
-# Embedded Swift Matter Example: Smart Light example
+# Embedded Swift & Matter: Smart Light (On/Off switch)
 
-This directory contains an example implementation of a Matter smart LED light accessory in Embedded Swift, and it can be built using the ESP IDF and ESP Matter SDKs, and uploaded to an ESP32C6 or ESP32C3 development board.
+## Overview
 
-Breakdown of the files included:
+This directory contains an example implementation of a Matter smart light accessory in Embedded Swift, and it can be built using the ESP IDF and ESP Matter SDKs, and uploaded to an ESP32C6 or ESP32C3 development board.
 
-- **CMakeLists.txt** — Top-level CMake configuration file for the example, similar to the ["light" example from the ESP Matter SDK](https://github.com/espressif/esp-matter/tree/main/examples/light), with the minimum CMake version increased to 3.29 as required by Swift.
-- **partitions.csv** — Partition table for the firmware. Same as the ["light" example from the ESP Matter SDK](https://github.com/espressif/esp-matter/tree/main/examples/light).
-- **README.md** — This documentation file.
-- **sdkconfig.defaults** — Compile-time settings for the ESP IDF. Same as the ["light" example from the ESP Matter SDK](https://github.com/espressif/esp-matter/tree/main/examples/light).
-- **main/** — Subdirectory with actual source files to build.
-  - **main/BridgingHeader.h** — A bridging header that imports C and C++ declarations from ESP IDF and ESP Matter SDKs into Swift.
-  - **main/CmakeLists.txt** — CMake configuration describing what files to build and how. This includes a lot of Embedded Swift specific logic (e.g. Swift compiler flags).
-  - **main/idf_component.yml** — Dependency list for the IDF Component Manager. Same as the ["light" example from the ESP Matter SDK](https://github.com/espressif/esp-matter/tree/main/examples/light).
-  - **main/LED.swift** — Implementation of a helper "LED" object in Embedded Swift.
-  - **main/Main.swift** — Main file with Embedded Swift application source code.
-- **Matter/** — Subdirectory with a simple (incomplete) Matter overlay to bridge C++ Matter APIs into Swift
-  - **Matter/Attribute.swift** — Low-level overlay code for Matter attributes.
-  - **Matter/Clusters.swift** — Low-level overlay code for Matter clusters.
-  - **Matter/Matter.swift** — High-level Matter overlay code.
-  - **Matter/MatterInterface.cpp** — Helper C++ code for interoperating with Matter C++ APIs.
-  - **Matter/MatterInterface.h** — Helper C++ code for interoperating with Matter C++ APIs.
-  - **Matter/Node.swift** — Low-level overlay code for Matter nodes.
+> [!NOTE]
+> This repository is based on an example provided by Apple in the [swift-matter-examples](https://github.com/swiftlang/swift-matter-examples) repository.
 
-## Building and running the example
+
+#### Embedded Swift
+
+Embedded Swift is a subset of Swift designed for constrained environments, such as embedded devices, kernel code, and other low-level systems. It includes most Swift language features, like generics, value and reference types, optionals, error handling, and more. Embedded Swift introduces the safety and expressivity of Swift to environments usually dominated by C or C++ code. To learn more, see [A Vision for Embedded Swift](https://github.com/swiftlang/swift-evolution/blob/main/visions/embedded-swift.md).
+
+#### Matter
+
+Matter is an open standard for building smart home accessories, supported natively by many smart home ecosystems such as HomeKit. For more information about Matter, see the [Matter documentation](https://project-chip.github.io/connectedhomeip-doc/index.html).
+
+
+## Getting Started
+
+### Requirements
+
+Before running the examples, ensure you have the following tools available:
+
+- Hardware:
+  - [ESP32-C6-DevKitC-1-N8](https://docs.espressif.com/projects/espressif-esp-dev-kits/en/latest/esp32c6/esp32-c6-devkitc-1/user_guide.html)
+  - Have a set up HomeKit or other Matter-enabled smart home ecosystem.
+    - For HomeKit, this includes a configured home, a Wi-Fi network which additional devices can join, a [home hub](https://support.apple.com/en-us/102557), and an iOS device for managing the home.
+- Software
+  - [Swift Nightly Toolchain](https://www.swift.org/download)
+  - [CMake 3.29+](https://cmake.org/download)
+  - [ESP-IDF v5.4.1](https://docs.espressif.com/projects/esp-idf/en/v5.4.1/esp32c6/get-started/index.html)
+  - [ESP-Matter SDK 1.2](https://docs.espressif.com/projects/esp-matter/en/latest/esp32c6/introduction.html)
+
+> [!IMPORTANT]
+> This implementation is designed for an Espressif C6 Development Kit and built with macOS (or Linux).
+
+## Building and running
+
+> [!IMPORTANT]
+> Make sure you have first properly set up the ESP-IDF development environment as shown in this [tutorial](https://github.com/Rodrigue2g/Share/blob/main/src/embedded/embedded-swift.sh).
+
 
 For full steps how to build the example code, follow the [Setup Your Environment](https://apple.github.io/swift-embedded/swift-matter-examples/tutorials/tutorial-table-of-contents#setup-your-environment) tutorials and the [Explore the Smart Light example](https://apple.github.io/swift-matter-examples/tutorials/swiftmatterexamples/run-example-smart-light) tutorial. In summary:
 
@@ -31,13 +49,13 @@ For full steps how to build the example code, follow the [Setup Your Environment
 - Have a set up HomeKit or other Matter-enabled smart home ecosystem.
   - For HomeKit, this includes a configured home, a Wi-Fi network which additional devices can join, a [home hub](https://support.apple.com/en-us/102557), and an iOS device for managing the home.
 
-1. Clone the repository and navigate to the `smart-light` example.
+1. Clone the repository and navigate to the root folder.
   ```shell
-  $ git clone https://github.com/apple/swift-matter-examples.git
-  $ cd swift-matter-examples/smart-light
+  $ git clone https://github.com/Rodrigue2g/matter-smart-light.git
+  $ cd matter-smart-light
   ```
 
-2. Configure the build system for your microcontroller, this example should also be runnable on `esp32c3`.
+2. Configure the build system for your microcontroller, this should also be runnable on `esp32c3`.
   ```shell
   $ idf.py set-target esp32c6
   ```
@@ -49,6 +67,6 @@ For full steps how to build the example code, follow the [Setup Your Environment
 
 4. Register the device in your home network. See [Connect-using-Matter](https://apple.github.io/swift-matter-examples/tutorials/swiftmatterexamples/run-example-smart-light#Connect-using-Matter) for detailed pairing instructions with HomeKit.
 
-5. You can now control the smart light. In case of a HomeKit network, the Home app, and Siri can both be used to turn the light on, off, change colors, etc.
+If you need a pairing code, it will most likely be `2020-2021` 
 
-6. Explore the implementation, see [Understand the code](https://apple.github.io/swift-matter-examples/tutorials/swiftmatterexamples/run-example-smart-light#Understand-the-code) for a guided walkthrough.
+5. You can now control the smart light. In case of a HomeKit network, the Home app, and Siri can both be used to turn the light on & off.

@@ -11,10 +11,9 @@
 
 @_cdecl("app_main")
 func app_main() {
-  print("🏎️   Hello, Embedded Swift! (Smart Light)")
+  print("Smart Light starting up...")
 
   // let led = LED()
-
   let light_switch = Switch()
 
   // (1) Create a Matter root node

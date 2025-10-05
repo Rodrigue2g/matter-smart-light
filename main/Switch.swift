@@ -1,17 +1,6 @@
-//===----------------------------------------------------------------------===//
-//
-// This source file is part of the Swift open source project
-//
-// Copyright (c) 2024 Apple Inc. and the Swift project authors.
-// Licensed under Apache License v2.0 with Runtime Library Exception
-//
-// See https://swift.org/LICENSE.txt for license information
-//
-//===----------------------------------------------------------------------===//
-
-// Helper object that can be used to control the ESP32C6 on-board LED. Settings
-// the `enabled`, `brightness`, `color` properties immediately propagates those
-// to the physical LED.
+//  A simple Swift class for controlling a GPIO output pin (GPIO 22) on an ESP32-C6 device.
+//  When `enabled` is set, the corresponding GPIO pin is driven HIGH or LOW.
+//  This implementation assumes the ESP-IDF has been properly set up for Swift interop.
 final class Switch {
   // Whether the GPIO output should be HIGH or LOW
   var enabled: Bool = true {
