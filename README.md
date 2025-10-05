@@ -70,3 +70,27 @@ For full steps how to build the example code, follow the [Setup Your Environment
 If you need a pairing code, it will most likely be `2020-2021` 
 
 5. You can now control the smart light. In case of a HomeKit network, the Home app, and Siri can both be used to turn the light on & off.
+
+
+## Debugging
+
+As mentioned in this [issue](https://github.com/espressif/esp-matter/issues/1115), you might run into a bug when building this project, with the following ouput build logs:
+````
+/home/../light/managed_components/espressif__esp_insights/src/esp_insights_cbor_encoder.c:176:22: error: 'SHA_SIZE' undeclared here (not in a function)
+  176 |     char sha_sum[2 * SHA_SIZE + 1];
+      |                      ^~~~~~~~
+/home/../light/managed_components/espressif__esp_insights/src/esp_insights_cbor_encoder.c: In function 'encode_data_points':
+/home/../light/managed_components/espressif__esp_insights/src/esp_insights_cbor_encoder.c:587:20: error: 'rtc_store_non_critical_data_hdr_t' has no member named 'dg'
+  587 |         if (!header.dg || !esp_ptr_in_drom(header.dg) || !header.len) {
+      |                    ^
+/home/../light/managed_components/espressif__esp_insights/src/esp_insights_cbor_encoder.c:587:50: error: 'rtc_store_non_critical_data_hdr_t' has no member named 'dg'
+  587 |         if (!header.dg || !esp_ptr_in_drom(header.dg) || !header.len) {
+      |                                                  ^
+...
+ninja: build stopped: subcommand failed.
+````
+To fix it, simply run:
+```
+$ idf.py add-dependency "espressif/esp_diag_data_store==1.0.1"
+```
+And try to build again.
